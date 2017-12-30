@@ -31,7 +31,8 @@ class ComposeViewController: UIViewController {
         if !user.verified {
             verifiedView.isHidden = true
         }
-        
+        nameLabel.text = user.name
+        screenameLabel.text = "@" + user.screenName
         tweetView.delegate = self
         profileView.af_setImage(withURL: URL(string: user.profileImage)!)
     }
