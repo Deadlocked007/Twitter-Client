@@ -15,8 +15,8 @@ import KeychainAccess
 class APIManager: SessionManager {
     
     // MARK: TODO: Add App Keys
-    static let consumerKey = "YOUR_KEY_HERE"
-    static let consumerSecret = "YOUR_SECRET_HERE"
+    static let consumerKey = ""
+    static let consumerSecret = ""
 
     static let requestTokenURL = "https://api.twitter.com/oauth/request_token"
     static let authorizeURL = "https://api.twitter.com/oauth/authorize"
@@ -53,8 +53,8 @@ class APIManager: SessionManager {
     func logout() {
         clearCredentials()
         
-        // TODO: Clear current user by setting it to nil
-
+        User.current = nil
+        
         NotificationCenter.default.post(name: NSNotification.Name("didLogout"), object: nil)
     }
 
@@ -109,9 +109,7 @@ class APIManager: SessionManager {
                     UserDefaults.standard.set(data, forKey: "hometimeline_tweets")
                     UserDefaults.standard.synchronize()
 
-                    let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
-                        Tweet(dictionary: dictionary)
-                    })
+                    let tweets = Tweet.tweets(with: tweetDictionaries)
                     completion(tweets, nil)
                 }
         }
