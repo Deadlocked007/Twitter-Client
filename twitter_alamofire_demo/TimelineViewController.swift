@@ -28,7 +28,8 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         loadTweets()
     }
     
-    func loadTweets() {
+    @objc func loadTweets() {
+        print("wow")
         APIManager.shared.getHomeTimeLine { (tweets, error) in
             if let tweets = tweets {
                 self.tweets = tweets
@@ -48,6 +49,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         cell.tweet = tweets[indexPath.row]
+        cell.delegate = self
         
         return cell
     }
@@ -56,25 +58,39 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
     @IBAction func didTapLogout(_ sender: Any) {
         APIManager.shared.logout()
     }
     
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
+        guard let id = segue.identifier else {
+            return
+        }
+        
+        switch id {
+        case "addSegue":
+            let destination = segue.destination as! ComposeViewController
+            destination.delegate = self
+        default:
+            return
+        }
      }
-     */
+    
+    
+}
+
+extension TimelineViewController: ComposeViewControllerDelegate {
+    func did(post: Tweet) {
+        self.loadTweets()
+    }
+    
     
 }

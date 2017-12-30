@@ -23,6 +23,8 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var verifiedConstraint: NSLayoutConstraint!
     @IBOutlet weak var screennameAndDateLabel: UILabel!
     
+    var delegate: ComposeViewControllerDelegate?
+    
     var tweet: Tweet! {
         didSet {
             if !tweet.user.verified {
@@ -43,9 +45,9 @@ class TweetCell: UITableViewCell {
             }
             
             if tweet.retweeted {
-                favoriteView.image = UIImage(named: "retweet-icon-green")
+                retweetView.image = UIImage(named: "retweet-icon-green")
             } else {
-                favoriteView.image = UIImage(named: "retweet-icon")
+                retweetView.image = UIImage(named: "retweet-icon")
             }
             
             retweetView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(retweetPost)))
@@ -59,7 +61,7 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    func favoritePost() {
+    @objc func favoritePost() {
         favoriteView.isUserInteractionEnabled = false
         if let favorited = tweet.favorited {
             if favorited {
@@ -96,19 +98,8 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    func retweetPost() {
+    @objc func retweetPost() {
         if tweet.retweeted {
-            retweetView.isUserInteractionEnabled = false
-            APIManager.shared.retweet(tweet, completion: { (tweet, error) in
-                if let error = error {
-                    self.retweetView.isUserInteractionEnabled = true
-                    print(error.localizedDescription)
-                } else {
-                    self.retweetView.isUserInteractionEnabled = true
-                    self.tweet = tweet
-                }
-            })
-        } else {
             retweetView.isUserInteractionEnabled = false
             APIManager.shared.unRetweet(tweet, completion: { (tweet, error) in
                 if let error = error {
@@ -116,7 +107,18 @@ class TweetCell: UITableViewCell {
                     print(error.localizedDescription)
                 } else {
                     self.retweetView.isUserInteractionEnabled = true
-                    self.tweet = tweet
+                    self.delegate?.did(post: tweet!)
+                }
+            })
+        } else {
+            retweetView.isUserInteractionEnabled = false
+            APIManager.shared.retweet(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.retweetView.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                } else {
+                    self.retweetView.isUserInteractionEnabled = true
+                    self.delegate?.did(post: tweet!)
                 }
             })
         }
