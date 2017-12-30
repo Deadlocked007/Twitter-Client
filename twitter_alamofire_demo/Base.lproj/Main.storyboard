@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -85,12 +86,8 @@
                                                         <constraint firstAttribute="width" constant="60" id="wvz-j7-WYH"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNK-cl-uBK">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNK-cl-uBK">
                                                     <rect key="frame" x="84" y="16" width="43" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="xNK-cl-uBK" secondAttribute="height" multiplier="43:21" id="SfW-Wk-xkj"/>
-                                                        <constraint firstAttribute="width" constant="43" id="fBl-zS-uNc"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -147,7 +144,7 @@
                                                         <constraint firstAttribute="width" secondItem="tnd-uO-vjM" secondAttribute="height" multiplier="1:1" id="epH-zq-qTP"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screenname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVP-kc-qbu">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screenname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVP-kc-qbu">
                                                     <rect key="frame" x="150" y="21" width="80.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -155,6 +152,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="DVP-kc-qbu" secondAttribute="trailing" constant="16" id="0KW-PQ-lBu"/>
                                                 <constraint firstItem="Npq-Ye-5DC" firstAttribute="leading" secondItem="jfr-cl-PuS" secondAttribute="trailing" constant="36" id="85y-hH-Qxq"/>
                                                 <constraint firstItem="cza-Vl-3Zr" firstAttribute="leading" secondItem="Npq-Ye-5DC" secondAttribute="trailing" id="BCI-mj-27a"/>
                                                 <constraint firstItem="oxd-f9-7cc" firstAttribute="leading" secondItem="cza-Vl-3Zr" secondAttribute="trailing" constant="36" id="ElF-6y-8nN"/>

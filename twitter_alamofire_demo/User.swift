@@ -10,7 +10,7 @@ import Foundation
 
 class User {
     
-    static var current: User?
+    static var current: User? 
     
     var name: String
     var screenName: String

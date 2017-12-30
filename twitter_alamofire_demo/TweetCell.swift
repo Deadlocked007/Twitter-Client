@@ -30,7 +30,7 @@ class TweetCell: UITableViewCell {
             }
             
             screennameAndDateLabel.text = "@\(tweet.user.screenName) . \(tweet.createdAtString)"
-            replyCountLabel.text = "\(tweet.replyCount)"
+            replyCountLabel.text = "\(tweet.replyCount ?? 0)"
             retweetCountLabel.text = "\(tweet.retweetCount)"
             
             if let favoriteCount = tweet.favoriteCount {
@@ -38,18 +38,87 @@ class TweetCell: UITableViewCell {
             }
             if let favorited = tweet.favorited, favorited {
                 favoriteView.image = UIImage(named: "favor-icon-red")
+            } else {
+                favoriteView.image = UIImage(named: "favor-icon")
             }
             
             if tweet.retweeted {
                 favoriteView.image = UIImage(named: "retweet-icon-green")
+            } else {
+                favoriteView.image = UIImage(named: "retweet-icon")
             }
             
+            retweetView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(retweetPost)))
+            favoriteView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(favoritePost)))
             
             tweetTextLabel.text = tweet.text
             nameLabel.text = tweet.user.name
             profileView.af_setImage(withURL: URL(string: tweet.user.profileImage)!)
             profileView.layer.cornerRadius = 8
             profileView.layer.masksToBounds = true
+        }
+    }
+    
+    func favoritePost() {
+        favoriteView.isUserInteractionEnabled = false
+        if let favorited = tweet.favorited {
+            if favorited {
+                APIManager.shared.unFavorite(tweet, completion: { (tweet, error) in
+                    if let error = error {
+                        self.favoriteView.isUserInteractionEnabled = true
+                        print(error.localizedDescription)
+                    } else {
+                        self.favoriteView.isUserInteractionEnabled = true
+                        self.tweet = tweet
+                    }
+                })
+            } else {
+                APIManager.shared.favorite(tweet, completion: { (tweet, error) in
+                    if let error = error {
+                        self.favoriteView.isUserInteractionEnabled = true
+                        print(error.localizedDescription)
+                    } else {
+                        self.favoriteView.isUserInteractionEnabled = true
+                        self.tweet = tweet
+                    }
+                })
+            }
+        } else {
+            APIManager.shared.favorite(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.favoriteView.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                } else {
+                    self.favoriteView.isUserInteractionEnabled = true
+                    self.tweet = tweet
+                }
+            })
+        }
+    }
+    
+    func retweetPost() {
+        if tweet.retweeted {
+            retweetView.isUserInteractionEnabled = false
+            APIManager.shared.retweet(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.retweetView.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                } else {
+                    self.retweetView.isUserInteractionEnabled = true
+                    self.tweet = tweet
+                }
+            })
+        } else {
+            retweetView.isUserInteractionEnabled = false
+            APIManager.shared.unRetweet(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.retweetView.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                } else {
+                    self.retweetView.isUserInteractionEnabled = true
+                    self.tweet = tweet
+                }
+            })
         }
     }
     
